@@ -1,11 +1,30 @@
 import { useState } from "react";
-import { categories, products } from "../data/products";
-import { useCart } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import { categories, products } from "./data/products";
+import { addItem, updateQuantity } from "./CartSlice";
 import "./ProductList.css";
 
 function ProductCard({ product }) {
-  const { items, addToCart, increaseQuantity, decreaseQuantity } = useCart();
-  const cartItem = items.find((item) => item.id === product.id);
+  const dispatch = useDispatch();
+  const cartItem = useSelector((state) =>
+    state.cart.items.find((item) => item.id === product.id)
+  );
+
+  const handleAddToCart = () => {
+    dispatch(addItem(product));
+  };
+
+  const handleIncrement = () => {
+    dispatch(
+      updateQuantity({ id: product.id, quantity: cartItem.quantity + 1 })
+    );
+  };
+
+  const handleDecrement = () => {
+    dispatch(
+      updateQuantity({ id: product.id, quantity: cartItem.quantity - 1 })
+    );
+  };
 
   return (
     <div className="product-card">
@@ -23,7 +42,7 @@ function ProductCard({ product }) {
         <div className="quantity-controls">
           <button
             type="button"
-            onClick={() => decreaseQuantity(product.id)}
+            onClick={handleDecrement}
             aria-label={`Decrease quantity of ${product.name}`}
           >
             &minus;
@@ -31,7 +50,7 @@ function ProductCard({ product }) {
           <span>{cartItem.quantity}</span>
           <button
             type="button"
-            onClick={() => increaseQuantity(product.id)}
+            onClick={handleIncrement}
             aria-label={`Increase quantity of ${product.name}`}
           >
             +
@@ -41,7 +60,7 @@ function ProductCard({ product }) {
         <button
           type="button"
           className="add-to-cart-button"
-          onClick={() => addToCart(product)}
+          onClick={handleAddToCart}
         >
           Add to Cart
         </button>

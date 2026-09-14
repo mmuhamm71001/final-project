@@ -1,9 +1,8 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Header from "./components/Header";
-import AboutUs from "./components/AboutUs";
-import ProductList from "./components/ProductList";
-import Cart from "./components/Cart";
-import { CartProvider } from "./context/CartContext";
+import Header from "./Header";
+import AboutUs from "./AboutUs";
+import ProductList from "./ProductList";
+import CartItem from "./CartItem";
 import "./App.css";
 
 // The Paradise Nursery landing page itself: company name, tagline, and the
@@ -35,17 +34,15 @@ function LandingPage() {
 
 function App() {
   return (
-    <CartProvider>
-      <div className="app">
-        <Header />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/cart" element={<Cart />} />
-        </Routes>
-      </div>
-    </CartProvider>
+    <div className="app">
+      <Header />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/cart" element={<CartItem />} />
+      </Routes>
+    </div>
   );
 }
 
